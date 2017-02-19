@@ -1,6 +1,5 @@
 'use strict';
 
-var bonjour = require('bonjour')();
 var ip = require('ip');
 
 var app = require('./app');
