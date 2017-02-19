@@ -1,0 +1,33 @@
+{
+  "name": "hunga",
+  "version": "0.0.1",
+  "description": "What Do You Eat?",
+  "main": "hunga.js",
+  "scripts": {
+    "test": "test",
+    "start": "node hunga.js"
+  },
+  "author": "TVLuke",
+  "license": "ISC",
+  "dependencies": {
+    "request": "2.69.0",
+    "mysql": "2.11.1",
+    "body-parser": "^1.14.2",
+    "cors": "2.7.1",
+    "express": "^4.13.4",
+    "ip": "1.1.1",
+    "pg": "^4.5.5",
+    "sequelize": "^3.23.2",
+    "sqlite3": "^3.1.4",
+    "trim": "0.0.1"
+  },
+  "devDependencies": {
+    "jake": "latest",
+    "jshint": "^2.9.1",
+    "mocha": "^2.4.5",
+    "nodemon": "^1.8.1",
+    "require": "latest",
+    "should": "^8.2.2",
+    "supertest": "^1.2.0"
+  }
+}
