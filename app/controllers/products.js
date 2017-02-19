@@ -133,6 +133,7 @@ module.exports = function(models) {
       where: {indirectBarcode: req.body.indirectBarcode}
     }).then(function(product) {
       if (!product) {
+        products.create(req, res);
         res.writeHead(404, {'content-type': 'text/plain'});
         res.end('Not found');
         throw null;
