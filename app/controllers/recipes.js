@@ -156,14 +156,26 @@ module.exports = function(models) {
     recipes.destroy = function(req, res) {
      console.log("destroy Recipe");
 
-     models.Recipe.destroy({
-       where: {id: req.params.id}
-     }).then(function(deleted) {
-       res.json({
-         message: 'Product deleted.'
+     models.User.findOne({
+       where: {userNumber: req.params.userNumber},
+       attributes: user_attributes
+     }).then(function(returnUser) {
+       models.Recipe.findOne({
+         where: {
+           id: req.params.id,
+           userId: returnUser.id
+         }, attributes: json_attributes
+       }).then(function(returnThingNew) {
+           models.Recipe.destroy({
+             where: {id: req.params.id}
+           }).then(function(deleted) {
+             res.json({
+               message: 'Product deleted.'
+             });
+           });
        });
      }).catch(utils.handleError(res));
-    };
+   };
 
     return recipes;
   };
