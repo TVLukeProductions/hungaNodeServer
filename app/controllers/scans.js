@@ -54,6 +54,8 @@ module.exports = function(models) {
     scans.create = function(req, res) {
       console.log("create Scan");
       console.log(req.body.userNumber);
+      console.log(req.body.timestamp);
+      console.log(new Date(parseInt(req.body.timestamp)));
       models.User.findOne({
         where: {userNumber: req.body.userNumber}, attributes: user_attributes
       }).then(function(returnUser) {
@@ -75,7 +77,6 @@ module.exports = function(models) {
           models.Recipe.findOne({
             where: {id: req.body.recipe}, attributes: recipe_attributes
           }).then(function(returnRecipe) {
-
             var recipe = getRecipeId(returnRecipe);
 
             models.Scan.create({
@@ -83,6 +84,7 @@ module.exports = function(models) {
               productId:  returnProduct.id,
               userId:     returnUser.id,
               recipeId:   recipe,
+              createdAt:  new Date(parseInt(req.body.timestamp)),
             }).then(function(returnScan) {
               res.status(201).json(returnScan);
             }).catch(Sequelize.UniqueConstraintError, function(err) {
@@ -96,12 +98,46 @@ module.exports = function(models) {
       })
     };
 
-    function getRecipeId(recipe) {
+  scans.change = function(req, res) {
+    models.User.findOne({
+      where: {userNumber: req.body.userNumber}, attributes: user_attributes
+    }).then(function(returnUser) {
+      if (!returnUser) {
+        res.writeHead(404, {'content-type': 'text/plain'});
+        res.end('User with user code not found.');
+        throw null;
+      }
+      models.Product.findOne({
+        where: {indirectBarcode: req.body.barcode}, attributes: product_attributes
+      }).then(function(returnProduct) {
+        if (!returnProduct) {
+          res.writeHead(404, {'content-type': 'text/plain'});
+          res.end('Product with barcode not found');
+          throw null;
+        }
+        models.Scan.findOne({
+          where: {
+            userId: returnUser.id,
+            productId: returnProduct.id,
+            createdAt: req.body.timestamp
+          }, attributes: json_attributes
+        }).then(function(returnScan) {
+          returnScan.amount = req.body.newAmount,
+          returnScan.createdAt = new Date(req.body.newTimestamp);
+          return returnScan.save().then(function() {
+            res.json(utils.filterObject(json_attributes, returnScan));
+          });
+        }).catch(utils.handleError(res));
+      })
+    })
+  };
+
+  function getRecipeId(recipe) {
         if(recipe) {
-          recipe.id;
+          return recipe.id;
         }
         return null;
-    }
+  }
 
-    return scans;
-  };
+  return scans;
+};

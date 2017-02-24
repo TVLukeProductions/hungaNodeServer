@@ -49,12 +49,14 @@ app.post('/equivalencegroups', equivalenceGroups.create);
 app.get('/recipes/:userNumber', recipes.list);
 app.get('/recipes/:id', recipes.show);
 app.post('/recipes', recipes.create);
+app.delete('/recipes/:userNumber/:id', recipes.destroy);
 
 app.post('/users', users.create);
 app.get('/users/:userId', users.show);
 
 app.get('/scans/:userNumber', scans.list);
 app.post('/scans', scans.create);
+app.put('/scans/:userNumber/:timestamp/:barcode', scans.change);
 
 app.get('/ingredients', ingredients.list);
 app.post('/ingredients', ingredients.create);

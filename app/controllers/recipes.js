@@ -10,7 +10,7 @@ module.exports = function(models) {
 
     var user_attributes = ['id', 'userNumber', 'name']
 
-    var product_attributes = ['id']
+    var product_attributes = ['id', 'indirectBarcode']
 
     var recipes = {};
 
@@ -85,25 +85,27 @@ module.exports = function(models) {
             returnUser = returnThing;
           });
         }
-
         models.Recipe.create({
           name:             req.body.name,
           numberOfPersons:  req.body.numberOfPersons,
           fixedProportions: req.body.fixedProportions,
           userId:           returnUser.id,
         }).then(function(returnThing) {
-          for(var j in jsoninput['ingredients']) {
+          for(var j=0; j<jsoninput['ingredients'].length; j++) {
             models.Product.findOne({
               where: {indirectBarcode: jsoninput['ingredients'][j]['barcode']}, attributes: product_attributes
             }).then(function(returnProduct) {
-              models.Ingredient.create({
-                weight:             jsoninput['ingredients'][j]['amount'],
-                generalizable:      jsoninput['ingredients'][j]['generalizable'],
-                productId:          returnProduct.id,
-                recipeId:           returnThing.id
-              });
+              for(var k=0; k<jsoninput['ingredients'].length; k++) {
+                  if(jsoninput['ingredients'][k]['barcode'] == returnProduct.indirectBarcode) {
+                    models.Ingredient.create({
+                      weight:             jsoninput['ingredients'][k]['amount'],
+                      generalizable:      jsoninput['ingredients'][k]['generalizable'],
+                      productId:          returnProduct.id,
+                      recipeId:           returnThing.id
+                    });
+                  }
+              }
             });
-            console.log(JSON.stringify(jsoninput['ingredients'][j]));
           }
           models.Recipe.findOne({
             where: {id: returnThing.id}, attributes: json_attributes
