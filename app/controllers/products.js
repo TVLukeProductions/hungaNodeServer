@@ -10,14 +10,14 @@ module.exports = function(models) {
     'baseAmount', 'baseUnit', 'itemGood', 'solid', 'weight',
     'kcal','fat', 'satFat', 'carb', 'sugar', 'protein', 'salt',
     'phe', 'isPheCalculated', 'isSugarAdded', 'unprocessed',
-    'containsAlcohol', 'containsCaffein', 'comment', 'createdAt',
+    'containsAlcohol', 'containsCaffein', 'ShelfLife', 'comment', 'createdAt',
     'updatedAt'];
 
     var json_attributes_with_Id = ['id', 'barcode', 'indirectBarcode', 'name',
       'baseAmount', 'baseUnit', 'itemGood', 'solid', 'weight',
       'kcal','fat', 'satFat', 'carb', 'sugar', 'protein', 'salt',
       'phe', 'isPheCalculated', 'isSugarAdded', 'unprocessed',
-      'containsAlcohol', 'containsCaffein', 'comment', 'createdAt',
+      'containsAlcohol', 'containsCaffein', 'ShelfLife', 'comment', 'createdAt',
       'updatedAt', 'foodGroupId', 'equivalenceGroupId'];
 
   var foodGroup_attributes = ['id', 'name'];

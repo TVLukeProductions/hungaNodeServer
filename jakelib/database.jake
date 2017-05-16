@@ -15,6 +15,7 @@ var User = models.User;
 var Meal = models.Meal;
 var MealType = models.MealType;
 var Favorites = models.Favorites;
+var storageItem = models.StorageItem;
 
 namespace('db', function() {
 

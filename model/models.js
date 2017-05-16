@@ -152,6 +152,10 @@ var Product = exports.Product = database.define('product',
    comment: {
      type: Sequelize.STRING,
    },
+   ShelfLife: {
+     type: Sequelize.INTEGER,
+     defaultValue: 7,
+   }
  },
  {
    createdAt: 'createdAt',
@@ -294,6 +298,33 @@ var Favorite = exports.Favorite = database.define('favorite',
   updatedAt: 'updatedAt',
 });
 
+var StorageItem = exports.StorageItem = database.define('storageItem',
+{
+  id: {
+   type: Sequelize.INTEGER(11),
+   allowNull: false,
+   primaryKey: true,
+   autoIncrement: true,
+  },
+  packagingsize: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  percentageUsed: {
+    type: Sequelize.DECIMAL,
+    allowNull: false,
+  },
+  shelfLife: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    unique: false,
+  }
+},
+{
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+});
+
 FoodGroup.hasMany(Product);
 Product.belongsTo(FoodGroup);
 
@@ -322,3 +353,8 @@ Meal.belongsTo(User);
 
 Favorite.belongsTo(User);
 Favorite.belongsTo(Product);
+
+StorageItem.belongsTo(Product);
+Product.hasMany(StorageItem);
+StorageItem.belongsTo(User);
+User.hasMany(StorageItem);

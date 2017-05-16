@@ -13,11 +13,12 @@ var equivalenceGroups = require('./controllers/equivalenceGroups')(models);
 var recipes = require('./controllers/recipes')(models);
 var ingredients = require('./controllers/ingredients')(models);
 var scans = require('./controllers/scans')(models);
-var users = require('./controllers/users')(models)
-var mealtypes = require('./controllers/mealtypes')(models)
-var meals = require('./controllers/meals')(models)
-var transfer = require('./controllers/transfer')(models)
-var favorites = require('./controllers/favorites')(models)
+var users = require('./controllers/users')(models);
+var mealtypes = require('./controllers/mealtypes')(models);
+var meals = require('./controllers/meals')(models);
+var transfer = require('./controllers/transfer')(models);
+var favorites = require('./controllers/favorites')(models);
+var storageItems = require('./controllers/storageItems')(models);
 
 
 var app = express();
@@ -38,7 +39,7 @@ app.get('/products', products.list);
 app.get('/products/:barcode', products.show);
 app.post('/products', products.create);
 app.delete('/products/:barcode', products.destroy);
-app.put('/products', products.modify);
+app.put('/products/:barcode', products.modify);
 
 app.get('/foodgroups', foodgroups.list);
 app.post('/foodgroups', foodgroups.create);
@@ -67,12 +68,17 @@ app.delete('/mealtypes/:id', mealtypes.destroy);
 
 app.get('/meals/:userNumber', meals.list);
 app.post('/meals', meals.create);
+app.delete('/meals/:id', meals.destroy);
 
 app.get('/favorites/:userNumber', favorites.list);
-app.post('/favorites', favorites.create)
+app.post('/favorites', favorites.create);
 app.delete('/favorites/:userNumber/:barcode', favorites.destroy);
 
-app.get('/transfer/:start/:end', transfer.doit)
+app.get('/storageitems/:userNumber', storageItems.list);
+app.post('/storageitems', storageItems.create);
+app.put('/storageitems/:id', storageItems.modify);
+
+app.get('/transfer/:start/:end', transfer.doit);
 
 
 

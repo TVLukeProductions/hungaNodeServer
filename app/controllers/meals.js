@@ -57,7 +57,6 @@ module.exports = function(models) {
         }
 
         models.Meal.create({
-          name:             req.body.name,
           recipeId:         req.body.recipeId,
           mealtypeId:       req.body.mealtypeId,
           userId:           returnUser.id,
@@ -71,6 +70,30 @@ module.exports = function(models) {
         }).catch(utils.handleError(res));
       });
     };
+
+    meals.destroy = function(req, res) {
+     console.log("destroy Meals");
+
+     models.User.findOne({
+       where: {userNumber: req.params.userNumber},
+       attributes: user_attributes
+     }).then(function(returnUser) {
+       models.Recipe.findOne({
+         where: {
+           id: req.params.id,
+           userId: returnUser.id
+         }, attributes: json_attributes
+       }).then(function(returnThingNew) {
+           models.Recipe.destroy({
+             where: {id: req.params.id}
+           }).then(function(deleted) {
+             res.json({
+               message: 'Product deleted.'
+             });
+           });
+       });
+     }).catch(utils.handleError(res));
+   };
 
     return meals;
 }
